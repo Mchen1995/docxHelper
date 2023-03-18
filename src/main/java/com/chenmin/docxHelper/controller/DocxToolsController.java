@@ -2,6 +2,7 @@ package com.chenmin.docxHelper.controller;
 
 import com.chenmin.docxHelper.model.DemandVO;
 import com.chenmin.docxHelper.service.DocxGenerationService;
+import com.chenmin.docxHelper.service.DocxMergingService;
 import com.chenmin.docxHelper.service.ExcelHelperService;
 import com.chenmin.docxHelper.service.UIService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.List;
 
 
 @Controller
-public class ViewDemandController {
+public class DocxToolsController {
 
     @Autowired
     private UIService uiService;
@@ -26,10 +27,25 @@ public class ViewDemandController {
     @Autowired
     private ExcelHelperService excelHelperService;
 
+    @Autowired
+    private DocxMergingService docxMergingService;
+
+    @GetMapping("/merge")
+    public void mergeDocx() {
+        docxMergingService.mergeDocx();
+    }
+
 
     @GetMapping("/view")
     public String getDemands(Model model) throws IOException {
         return uiService.viewDemands(model);
+    }
+
+    @GetMapping("/gen/summary/docx")
+    @ResponseBody
+    public String genSummaryDocx() throws IOException {
+        docxGenerationService.generateTestReportSummary();
+        return "success";
     }
 
     @PostMapping("/gen/case/docx")

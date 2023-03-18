@@ -25,9 +25,24 @@
         </tr>
         </tbody>
     </table>
-    <button type="button" onclick="gen()">提交</button>
+    <button type="button" onclick="gen()">生成案例表格</button>
+    <button type="button" onclick="genSummary()">生成汇总表格</button>
 </form>
 <script>
+        function genSummary() {
+            $.ajax({
+                type: 'GET',
+                url: '/gen/summary/docx',
+                contentType: 'application/json',
+                success: function(data) {
+                    alert('成功');
+                },
+                error: function() {
+                    alert('失败');
+                }
+            });
+        }
+
         function gen() {
             var demandList = [];
             $('table tbody tr').each(function() {
