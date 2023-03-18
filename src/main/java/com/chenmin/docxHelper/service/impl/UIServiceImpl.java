@@ -27,14 +27,15 @@ public class UIServiceImpl implements UIService {
         List<String> idList = dataSrc.get(1);
         List<String> descriptionList = dataSrc.get(2);
 
-        List<DemandVO> dataToShow = new ArrayList<>();
+        List<DemandVO> demandList = new ArrayList<>();
         for (int i = 0; i < rows; i++) {
-            dataToShow.add(new DemandVO(
+            demandList.add(new DemandVO(
                     Integer.parseInt(orderList.get(i)),
                     idList.get(i),
-                    descriptionList.get(i)));
+                    descriptionList.get(i),
+                    0));
         }
-        model.addAttribute("demandList", dataToShow);
+        model.addAttribute(HTML_FILE_NAME, demandList);
         return HTML_FILE_NAME;
     }
 }

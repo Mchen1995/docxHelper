@@ -75,13 +75,11 @@ public class DocxGenerationServiceImpl implements DocxGenerationService {
     }
 
     @Override
-    public void generateTestReportCase() throws IOException {
+    public void generateTestReportCase(List<String> numberList,
+                                       List<String> caseCountList,
+                                       List<String> orderList) throws IOException {
         String name = "陈敏";
         XWPFDocument document = new XWPFDocument();  // 创建全文
-        List<List<String>> readFromExcel = readExcelForCaseTable();  // 读取需求清单
-        List<String> numberList = readFromExcel.get(0);
-        List<String> caseCountList = readFromExcel.get(1);
-        List<String> orderList = readFromExcel.get(2);
         createCaseTable(document, numberList, caseCountList, orderList, name);
         String targetFilename = name + "_技术测试报告.docx";
         FileOutputStream out = new FileOutputStream(targetFilename);
@@ -190,22 +188,15 @@ public class DocxGenerationServiceImpl implements DocxGenerationService {
         HSSFWorkbook workbook = new HSSFWorkbook(fileInputStream);
         HSSFSheet sheet = workbook.getSheetAt(0);
         List<String> ids = new ArrayList<>();
-        List<String> caseCountList = new ArrayList<>();
         List<String> orderList = new ArrayList<>();
         List<List<String>> res = new ArrayList<>();
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
             HSSFRow row = sheet.getRow(i);
-            String s = row.getCell(5).toString();
-            if (s.startsWith(PICK_FLAG)) {
-                ids.add(row.getCell(1).toString());  // 需求编号列表
-                String caseCount = s.equals(PICK_FLAG) ? "1" : s.substring(1);
-                caseCountList.add(caseCount);  // 需求案例数
-                orderList.add(String.valueOf(i));  // 序号
-            }
+            orderList.add(String.valueOf(i));  // 序号
+            ids.add(row.getCell(1).toString());  // 需求编号列表
         }
-        res.add(ids);
-        res.add(caseCountList);
         res.add(orderList);
+        res.add(ids);
         fileInputStream.close();
         return res;
     }

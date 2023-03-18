@@ -16,13 +16,19 @@ public class DemandVO {
      */
     private String description;
 
+    /**
+     * 案例个数
+     */
+    private int caseCount;
+
     public DemandVO() {
     }
 
-    public DemandVO(int order, String id, String description) {
+    public DemandVO(int order, String id, String description, int caseCount) {
         this.order = order;
         this.id = id;
         this.description = description;
+        this.caseCount = caseCount;
     }
 
     public int getOrder() {
@@ -47,5 +53,13 @@ public class DemandVO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getCaseCount() {
+        return caseCount;
+    }
+
+    public void setCaseCount(int caseCount) {
+        this.caseCount = caseCount;
     }
 }

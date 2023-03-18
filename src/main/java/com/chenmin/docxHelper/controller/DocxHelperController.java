@@ -30,6 +30,6 @@ public class DocxHelperController {
 
     @GetMapping("/gen/test/case")
     public void generateTestReportCase() throws IOException {
-        docxGenerationService.generateTestReportCase();
+//        docxGenerationService.generateTestReportCase();
     }
 }

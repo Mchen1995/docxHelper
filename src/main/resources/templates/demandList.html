@@ -1,25 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>需求清单</title>
     <meta charset="UTF-8">
-    <title>demandList</title>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
 </head>
 <body>
-<table>
-    <thead>
-    <tr>
-        <th>序号</th>
-        <th>需求编号</th>
-        <th>需求描述</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="demand : ${demandList}">
-        <td th:text="${demand.order}"></td>
-        <td th:text="${demand.id}"></td>
-        <td th:text="${demand.description}"></td>
-    </tr>
-    </tbody>
-</table>
+<form id="scoreForm">
+    <table>
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>需求编号</th>
+            <th>需求描述</th>
+            <th>案例个数</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="demand : ${demandList}">
+            <td th:text="${demand.order}"></td>
+            <td th:text="${demand.id}" th:value="${demand.id}"></td>
+            <td th:text="${demand.description}"></td>
+            <td><input type="text" name="score" th:value="${demand.caseCount}" /></td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="button" onclick="gen()">提交</button>
+</form>
+<script>
+        function gen() {
+            var demandList = [];
+            $('table tbody tr').each(function() {
+                var demand = {
+                    order: $(this).find('input[type="text"]').data('order'),
+                    id: $(this).find('input[type="text"]').data('id'),
+                    description: $(this).find('input[type="text"]').data('description'),
+                    caseCount: $(this).find('input[type="text"]').val()
+                };
+                demandList.push(demand);
+            });
+            $.ajax({
+                type: 'POST',
+                url: '/gen',
+                contentType: 'application/json',
+                data: JSON.stringify(demandList),
+                success: function(data) {
+                    alert('生成技术测试报告成功');
+                },
+                error: function() {
+                    alert('生成技术测试报告失败');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
