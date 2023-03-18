@@ -27,9 +27,4 @@ public class DocxHelperController {
     public void generateTestReportSummary() throws IOException {
         docxGenerationService.generateTestReportSummary();
     }
-
-    @GetMapping("/gen/test/case")
-    public void generateTestReportCase() throws IOException {
-//        docxGenerationService.generateTestReportCase();
-    }
 }
