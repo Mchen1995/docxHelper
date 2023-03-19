@@ -1,17 +1,14 @@
 package com.chenmin.docxHelper.service.impl;
 
 import com.chenmin.docxHelper.service.DocxGenerationService;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import com.chenmin.docxHelper.service.ExcelHelperService;
 import org.apache.poi.xwpf.usermodel.*;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service("docxGenerationService")
@@ -21,11 +18,6 @@ public class DocxGenerationServiceImpl implements DocxGenerationService {
      * 需求勾选标志
      */
     public static final String PICK_FLAG = "a";
-
-    /**
-     * Mac 上的需求清单文件路径
-     */
-    public static final String EXCEL_FILE_IN_MAC_OS = "/Users/chenmin/Desktop/docxHelper/src/main/resources/软件下发需求.xls";
 
     /**
      * Windows 上的需求清单文件路径
@@ -61,12 +53,15 @@ public class DocxGenerationServiceImpl implements DocxGenerationService {
      */
     public static final Integer PICTURE_HEIGHT = 4000;
 
+    @Autowired
+    private ExcelHelperService excelHelperService;
+
     @Override
     public void generateTestReportSummary() throws IOException {
         String targetFilename = "集团门户技术测试报告.docx";
         XWPFDocument document = new XWPFDocument();
         addHeader(document);
-        List<String> ids = readExcelForSummarizedTable();
+        List<String> ids = excelHelperService.readExcel().get(1);
         createSummarizedTable(document, ids);
         FileOutputStream out = new FileOutputStream(targetFilename);
         document.write(out);
@@ -183,24 +178,6 @@ public class DocxGenerationServiceImpl implements DocxGenerationService {
         }
     }
 
-    private List<List<String>> readExcelForCaseTable() throws IOException {
-        FileInputStream fileInputStream = new FileInputStream(EXCEL_FILE_IN_MAC_OS);
-        HSSFWorkbook workbook = new HSSFWorkbook(fileInputStream);
-        HSSFSheet sheet = workbook.getSheetAt(0);
-        List<String> ids = new ArrayList<>();
-        List<String> orderList = new ArrayList<>();
-        List<List<String>> res = new ArrayList<>();
-        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-            HSSFRow row = sheet.getRow(i);
-            orderList.add(String.valueOf(i));  // 序号
-            ids.add(row.getCell(1).toString());  // 需求编号列表
-        }
-        res.add(orderList);
-        res.add(ids);
-        fileInputStream.close();
-        return res;
-    }
-
     /**
      * 技术测试报告的文档前序部分
      * @param document 文档
@@ -223,22 +200,6 @@ public class DocxGenerationServiceImpl implements DocxGenerationService {
         document.createParagraph().createRun().setText("一、测试日期：YYYY年MM月DD日-MM月DD日");
         document.createParagraph().createRun().setText("二、测试人员：苏培泳、曹喜阳、黄梅兰、高发鑫、谢淑慧、张湛、宋浦榕、郑诗渊、吴铁浩、黄文龙、陈敏");
         document.createParagraph().createRun().setText("三、测试结果：测试通过");
-    }
-
-    /**
-     * 读取需求清单的需求编号
-     * @return 返回列表
-     */
-    private List<String> readExcelForSummarizedTable() throws IOException {
-        FileInputStream fileInputStream = new FileInputStream(EXCEL_FILE_IN_MAC_OS);
-        HSSFWorkbook workbook = new HSSFWorkbook(fileInputStream);
-        HSSFSheet sheet = workbook.getSheetAt(0);
-        List<String> ids = new ArrayList<>();
-        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-            HSSFRow row = sheet.getRow(i);
-            ids.add(row.getCell(1).toString());
-        }
-        return ids;
     }
 
     /**

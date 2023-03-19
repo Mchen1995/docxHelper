@@ -14,7 +14,7 @@ import java.util.List;
 @Service("excelHelperService")
 public class ExcelHelperServiceImpl implements ExcelHelperService {
 
-    public static final String EXCEL_FILE_IN_MAC_OS = "/Users/chenmin/Desktop/docxHelper/src/main/resources/软件下发需求.xls";
+    public static final String EXCEL_FILE_IN_MAC_OS = "软件下发需求.xls";
 
     /**
      * Windows 上的需求清单文件路径
