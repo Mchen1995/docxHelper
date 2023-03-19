@@ -14,5 +14,6 @@ public interface DocxGenerationService {
      */
     void generateTestReportCase(List<String> numberList,
                                 List<String> caseCountList,
-                                List<String> orderList) throws IOException;
+                                List<String> orderList,
+                                String name) throws IOException;
 }

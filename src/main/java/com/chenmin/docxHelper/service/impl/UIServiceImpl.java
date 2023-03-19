@@ -36,6 +36,7 @@ public class UIServiceImpl implements UIService {
                     0));
         }
         model.addAttribute(HTML_FILE_NAME, demandList);
+        model.addAttribute("name", "the name");
         return HTML_FILE_NAME;
     }
 }

@@ -25,6 +25,7 @@
         </tr>
         </tbody>
     </table>
+    <input type="text" th:field="*{name}" placeholder="输入姓名" id="name"/>
     <button type="button" onclick="gen()">生成案例表格</button>
     <button type="button" onclick="genSummary()">生成汇总表格</button>
 </form>
@@ -50,7 +51,8 @@
                     order: $(this).find('input[type="text"]').data('order'),
                     id: $(this).find('input[type="text"]').data('id'),
                     description: $(this).find('input[type="text"]').data('description'),
-                    caseCount: $(this).find('input[type="text"]').val()
+                    caseCount: $(this).find('input[type="text"]').val(),
+                    name: $('#name').val()
                 };
                 demandList.push(demand);
             });
@@ -60,10 +62,10 @@
                 contentType: 'application/json',
                 data: JSON.stringify(demandList),
                 success: function(data) {
-                    alert('生成技术测试报告成功');
+                    alert('成功');
                 },
                 error: function() {
-                    alert('生成技术测试报告失败');
+                    alert('失败');
                 }
             });
         }

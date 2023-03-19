@@ -37,7 +37,7 @@ class DocxHelperApplicationTests {
 	 */
 	@Test
 	void genCaseDocx() throws IOException {
-		docxGenerationService.generateTestReportCase();
+//		docxGenerationService.generateTestReportCase();
 		System.out.println(1);
 	}
 

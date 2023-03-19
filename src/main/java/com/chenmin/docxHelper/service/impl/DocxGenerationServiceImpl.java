@@ -77,8 +77,8 @@ public class DocxGenerationServiceImpl implements DocxGenerationService {
     @Override
     public void generateTestReportCase(List<String> numberList,
                                        List<String> caseCountList,
-                                       List<String> orderList) throws IOException {
-        String name = "陈敏";
+                                       List<String> orderList,
+                                       String name) throws IOException {
         XWPFDocument document = new XWPFDocument();  // 创建全文
         createCaseTable(document, numberList, caseCountList, orderList, name);
         String targetFilename = name + "_技术测试报告.docx";

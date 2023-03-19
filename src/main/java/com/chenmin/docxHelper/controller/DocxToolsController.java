@@ -51,6 +51,7 @@ public class DocxToolsController {
     @PostMapping("/gen/case/docx")
     @ResponseBody
     public String genCaseDocx(@RequestBody List<DemandVO> demandList) throws IOException {
+        String name = demandList.get(0).getName();
         List<List<String>> lists = excelHelperService.readExcel();
         List<String> idList = new ArrayList<>();
         List<String> caseCountList = new ArrayList<>();
@@ -64,7 +65,7 @@ public class DocxToolsController {
                 orderList.add(lists.get(0).get(i));
             }
         }
-        docxGenerationService.generateTestReportCase(idList, caseCountList, orderList);
+        docxGenerationService.generateTestReportCase(idList, caseCountList, orderList, name);
         return "success";
     }
 
