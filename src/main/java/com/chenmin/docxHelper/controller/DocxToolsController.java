@@ -1,10 +1,7 @@
 package com.chenmin.docxHelper.controller;
 
 import com.chenmin.docxHelper.model.DemandVO;
-import com.chenmin.docxHelper.service.DocxGenerationService;
-import com.chenmin.docxHelper.service.DocxMergingService;
-import com.chenmin.docxHelper.service.ExcelHelperService;
-import com.chenmin.docxHelper.service.UIService;
+import com.chenmin.docxHelper.service.*;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -39,9 +36,15 @@ public class DocxToolsController {
     @Autowired
     private DocxMergingService docxMergingService;
 
+    @Autowired
+    private DocxMergingNewService docxMergingNewService;
+
     @GetMapping("/merge")
-    public void mergeDocx() {
-        docxMergingService.mergeDocx();
+    @ResponseBody
+    public String mergeDocx() throws Exception {
+//        docxMergingService.mergeDocx();
+        docxMergingNewService.merge();
+        return "success";
     }
 
 
@@ -82,6 +85,19 @@ public class DocxToolsController {
     public void downloadFile(@PathVariable String name, HttpServletResponse response) throws IOException, InvalidFormatException {
         // 从文件系统中获取文件输入流
         File file = new File(name + "_技术测试报告.docx");
+        String filename = file.getName();
+        FileInputStream fis = new FileInputStream(file);
+        response.setHeader("Content-Disposition", "attachment; filename=" +
+                new String(filename.getBytes(), "ISO-8859-1"));
+        response.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        XWPFDocument document = new XWPFDocument(OPCPackage.open(fis));
+        document.write(response.getOutputStream());
+    }
+
+    @GetMapping("/merge/download")
+    public void downloadMergeFile(HttpServletResponse response) throws IOException, InvalidFormatException {
+        // 从文件系统中获取文件输入流
+        File file = new File("集团门户技术测试报告_版本号.docx");
         String filename = file.getName();
         FileInputStream fis = new FileInputStream(file);
         response.setHeader("Content-Disposition", "attachment; filename=" +

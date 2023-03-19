@@ -28,12 +28,27 @@
     <input type="text" th:field="*{name}" placeholder="输入姓名" id="name"/>
     <button type="button" onclick="gen()">生成案例表格</button>
     <button type="button" onclick="genSummary()">生成汇总表格</button>
+    <button type="button" onclick="merge()">点击合并</button>
 </form>
 <script>
         function genSummary() {
             $.ajax({
                 type: 'GET',
                 url: '/gen/summary/docx',
+                contentType: 'application/json',
+                success: function(data) {
+                    alert('成功');
+                },
+                error: function() {
+                    alert('失败');
+                }
+            });
+        }
+
+        function merge() {
+            $.ajax({
+                type: 'GET',
+                url: '/merge',
                 contentType: 'application/json',
                 success: function(data) {
                     alert('成功');
