@@ -5,11 +5,20 @@ import com.chenmin.docxHelper.service.DocxGenerationService;
 import com.chenmin.docxHelper.service.DocxMergingService;
 import com.chenmin.docxHelper.service.ExcelHelperService;
 import com.chenmin.docxHelper.service.UIService;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +45,7 @@ public class DocxToolsController {
     }
 
 
-    @GetMapping("/view")
+    @GetMapping("/list")
     public String getDemands(Model model) throws IOException {
         return uiService.viewDemands(model);
     }
@@ -67,6 +76,19 @@ public class DocxToolsController {
         }
         docxGenerationService.generateTestReportCase(idList, caseCountList, orderList, name);
         return "success";
+    }
+
+    @GetMapping("/list/{name}")
+    public void downloadFile(@PathVariable String name, HttpServletResponse response) throws IOException, InvalidFormatException {
+        // 从文件系统中获取文件输入流
+        File file = new File(name + "_技术测试报告.docx");
+        String filename = file.getName();
+        FileInputStream fis = new FileInputStream(file);
+        response.setHeader("Content-Disposition", "attachment; filename=" +
+                new String(filename.getBytes(), "ISO-8859-1"));
+        response.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        XWPFDocument document = new XWPFDocument(OPCPackage.open(fis));
+        document.write(response.getOutputStream());
     }
 
 }
