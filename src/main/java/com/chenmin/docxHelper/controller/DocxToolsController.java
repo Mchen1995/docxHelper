@@ -7,13 +7,10 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -32,9 +29,6 @@ public class DocxToolsController {
 
     @Autowired
     private ExcelHelperService excelHelperService;
-
-    @Autowired
-    private DocxMergingService docxMergingService;
 
     @Autowired
     private DocxMergingNewService docxMergingNewService;

@@ -18,10 +18,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.chenmin.docxHelper.service.impl.DocxMergingServiceImpl.DIR_MAC_OS;
 
 @Service("docxMergingNewService")
 public class DocxMergingNewServiceImpl implements DocxMergingNewService {
+    private static final String DIR_MAC_OS = "/Users/chenmin/Desktop/docxHelper/";
+
     @Override
     public void merge(String filename1, String filename2) throws Exception {
         InputStream in1 = null;
